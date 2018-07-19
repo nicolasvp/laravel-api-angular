@@ -14,7 +14,7 @@ class ChampionController extends Controller
      */
     public function index()
     {
-        return response()->json(Champion::orderBy('id', 'asc')->get());
+        return response()->json(Champion::orderBy('id', 'asc')->with('line')->with('type')->get());
     }
 
     /**

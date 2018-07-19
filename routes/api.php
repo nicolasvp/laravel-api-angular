@@ -18,3 +18,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::resource('champion', 'ChampionController')->only('index', 'show','store','edit','update','destroy');
+
+Route::get('lines', function(){
+	return response()->json(\App\Line::all());
+});
+
+Route::get('types', function(){
+	return response()->json(\App\Type::all());
+});
