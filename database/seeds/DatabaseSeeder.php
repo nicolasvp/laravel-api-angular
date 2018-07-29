@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(TypesSeeder::class);
         $this->call(ChampionsSeeder::class);
 
+        factory(App\Champion::class,200)->create();
     }
 }

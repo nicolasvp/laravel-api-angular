@@ -17,12 +17,25 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('champion', 'ChampionController')->only('index', 'show','store','edit','update','destroy');
 
-Route::get('lines', function(){
-	return response()->json(\App\Line::all());
-});
 
-Route::get('types', function(){
-	return response()->json(\App\Type::all());
+Route::post('register', 'AuthController@register');
+Route::post('login', 'AuthController@login');
+Route::post('recover', 'AuthController@recover');
+Route::group(['middleware' => ['jwt.auth']], function() {
+
+    Route::resource('champion', 'ChampionController')->only('index', 'show','store','edit','update','destroy');
+
+	Route::get('lines', function(){
+		return response()->json(\App\Line::all());
+	});
+
+	Route::get('types', function(){
+		return response()->json(\App\Type::all());
+	});
+
+	Route::get('logout', 'AuthController@logout');
+    Route::get('test', function(){
+        return response()->json(['foo'=>'bar']);
+    });
 });
