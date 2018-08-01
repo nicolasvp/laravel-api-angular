@@ -14,7 +14,8 @@ class DatabaseSeeder extends Seeder
         $this->call(LinesSeeder::class);
         $this->call(TypesSeeder::class);
         $this->call(ChampionsSeeder::class);
+        $this->call(UserSeeder::class);
 
-        factory(App\Champion::class,200)->create();
+        factory(App\Champion::class, 200)->create();
     }
 }
