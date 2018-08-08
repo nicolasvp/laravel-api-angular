@@ -43,23 +43,23 @@ class AuthController extends Controller
         $password = $request->password;
 
         // Set is_verified as true just to dont send email and shits
-        $user = User::create(['name' => $name, 'email' => $email, 'password' => Hash::make($password)]);
+        $user = User::create(['name' => $name, 'email' => $email, 'password' => Hash::make($password), 'is_verified' => true]);
         $verification_code = str_random(30); //Generate verification code
 
-        DB::table('user_verifications')->insert(['user_id'=>$user->id,'token'=>$verification_code]);
+        DB::table('user_verifications')->insert(['user_id' => $user->id, 'token' => $verification_code]);
 
-        // Code to send email confirmation and account verification
-        // $subject = "Please verify your email address.";
-        //
-        // Mail::send(
-        //     'email.verify',
-        //     ['name' => $name, 'verification_code' => $verification_code],
-        //     function ($mail) use ($email, $name, $subject) {
-        //         $mail->from(getenv('FROM_EMAIL_ADDRESS'), "From User/Company Name Goes Here");
-        //         $mail->to($email, $name);
-        //         $mail->subject($subject);
-        //     }
-        // );
+        //Code to send email confirmation and account verification
+        $subject = "Please verify your email address.";
+
+        Mail::send(
+            'email.verify',
+            ['name' => $name, 'verification_code' => $verification_code],
+            function ($mail) use ($email, $name, $subject) {
+                $mail->from(getenv('FROM_EMAIL_ADDRESS'), "From User/Company Name Goes Here");
+                $mail->to($email, $name);
+                $mail->subject($subject);
+            }
+        );
 
         return response()->json(['success'=> true, 'message'=> 'Thanks for signing up! Please check your email to complete your registration.']);
     }
