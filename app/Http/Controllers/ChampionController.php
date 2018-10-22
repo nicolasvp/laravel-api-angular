@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Champion;
+use Illuminate\Http\Request;
 
 class ChampionController extends Controller
 {
@@ -14,7 +14,12 @@ class ChampionController extends Controller
      */
     public function index()
     {
-        return response()->json(Champion::orderBy('id', 'asc')->with('line')->with('type')->get());
+        return response()->json(
+            Champion::orderBy('id', 'asc')
+                ->with('line')
+                ->with('type')
+                ->get()
+        );
     }
 
     /**
@@ -28,10 +33,13 @@ class ChampionController extends Controller
         $champion = Champion::create([
             'name' => $request->name,
             'line_id' => $request->line,
-            'type_id' => $request->type
+            'type_id' => $request->type,
         ]);
 
-        return response()->json($champion);
+        return response()->json(Champion::where('id', $champion->id)
+                        ->with('line')
+                        ->with('type')
+                        ->get());
     }
 
     /**
@@ -42,7 +50,7 @@ class ChampionController extends Controller
      */
     public function show($id)
     {
-        return response()->json(Champion::find($id));
+        return response()->json(Champion::where('id', $id)->with('line')->with('type')->get());
     }
 
     /**
@@ -53,7 +61,7 @@ class ChampionController extends Controller
      */
     public function edit($id)
     {
-        return response()->json(Champion::find($id));
+        return response()->json(Champion::where('id', $id)->with('line')->with('type')->get());
     }
 
     /**
@@ -72,7 +80,7 @@ class ChampionController extends Controller
         $champion->type_id = $request->type;
         $champion->save();
 
-         return response()->json($champion);
+        return response()->json($champion);
     }
 
     /**
